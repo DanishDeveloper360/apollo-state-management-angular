@@ -54,6 +54,9 @@ const CreateClientStore = cache => {
   // Merge all mutation functions of the given stores into a single object
   const mutations = mergeGet("mutations")(STORES);
 
+  // Merge all query functions of the given stores into a single object
+  const queries = mergeGet("queries")(STORES);
+
   // Construct the Client State with the given mutations and defaults
   return {
     cache,
@@ -63,7 +66,13 @@ const CreateClientStore = cache => {
        * These mutations relate to graphql mutations with the @client decorator
        * by function name.
        */
-      Mutation: mutations
+      Mutation: mutations,
+
+      /*
+       * These queries relate to graphql query(not default ones)
+       * by function name.
+       */
+      Query: queries
     }
   };
 };

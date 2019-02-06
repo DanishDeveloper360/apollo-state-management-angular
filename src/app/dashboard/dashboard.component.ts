@@ -5,7 +5,10 @@ import gql from "graphql-tag";
 
 const heroQuery = gql`
   query GetHeros {
-    currentHeros @client
+    currentHeros @client {
+      id
+      name
+    }
   }
 `;
 

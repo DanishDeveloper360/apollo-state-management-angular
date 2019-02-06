@@ -5,7 +5,10 @@ import gql from "graphql-tag";
 */
 
 const heroDefaults = {
-  currentHeros: []
+  currentHeros: [
+    { id: "1", name: "message 1", __typename: "Hero" },
+    { id: "2", name: "message 2", __typename: "Hero" }
+  ]
 };
 
 /*
@@ -14,7 +17,10 @@ const heroDefaults = {
 
 const heroQuery = gql`
   query GetHeros {
-    currentHeros @client
+    currentHeros @client {
+      id
+      name
+    }
   }
 `;
 
@@ -54,6 +60,17 @@ const clearHero = (_obj, _args, { cache }) => {
 };
 
 /*
+  Cache Queries
+*/
+const heros = (_obj, { id }, { cache }) => {
+  const query = heroQuery;
+  // Read the Hero's from the cache
+  const { currentHeros } = cache.readQuery({ query });
+
+  return currentHeros.filter(todo => todo.id === id);
+};
+
+/*
   Store
 */
 
@@ -66,6 +83,9 @@ const store = {
   mutations: {
     addHero,
     clearHero
+  },
+  queries: {
+    heros
   }
 };
 
